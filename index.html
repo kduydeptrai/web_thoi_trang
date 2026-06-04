@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dòng Chảy (The Flow) — Fashion Portfolio</title>
+    <title>HMB Agency — Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -50,7 +51,7 @@
 
         .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; mix-blend-mode: difference; color: #ffffff; pointer-events: none; transition: padding-right 0s; }
         .main-header * { pointer-events: auto; }
-        .logo { font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: 2px; font-weight: 500; }
+        .logo { font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: 2px; font-weight: 500; text-transform: uppercase; }
         nav ul { display: flex; gap: 40px; }
         nav ul li a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 400; opacity: 0.8; transition: opacity 0.3s ease; }
         nav ul li a:hover { opacity: 1; }
@@ -129,8 +130,85 @@
         .form-group label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 5px; }
         .btn-submit { align-self: flex-start; background: transparent; border: none; font-family: var(--font-sans); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--text-primary); padding-bottom: 5px; cursor: pointer; transition: opacity 0.3s ease; }
         .btn-submit:hover { opacity: 0.6; }
-        footer { padding: 60px 5%; border-top: 1px solid #e8e7e3; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary); }
-        .social-links { display: flex; gap: 30px; }
+
+        .hmb-footer {
+            background-color: var(--text-primary);
+            color: var(--bg-color);
+            padding: 100px 5% 40px 5%;
+            display: flex;
+            flex-direction: column;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 80px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h2 {
+            font-family: var(--font-serif);
+            font-size: 4.5rem;
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+        .footer-brand p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+            max-width: 85%;
+            text-align: justify;
+        }
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 40px;
+        }
+        .contact-block {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .contact-block span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #777;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-block a {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--bg-color);
+            transition: color 0.3s ease;
+        }
+        .contact-block a:hover {
+            color: #888;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #777;
+        }
+        .footer-bottom strong {
+            color: var(--bg-color);
+            font-weight: 400;
+        }
+        .back-to-top {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .back-to-top:hover {
+            color: var(--bg-color);
+        }
 
         #about-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
@@ -214,13 +292,18 @@
             .lightbox-img-wrapper { flex: 5; }
             .lightbox-content { flex: 5; padding: 30px; }
             #lightbox-title { font-size: 1.8rem; margin-bottom: 15px; }
+
+            .footer-top { grid-template-columns: 1fr; gap: 50px; padding-bottom: 50px; }
+            .footer-brand h2 { font-size: 3rem; }
+            .footer-brand p { max-width: 100%; }
+            .contact-block a { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <div class="logo">THE FLOW</div>
+        <div class="logo">HMB AGENCY</div>
         <nav>
             <ul>
                 <li><a href="#home">Trang chủ</a></li>
@@ -279,31 +362,18 @@
         <section id="process">
             <h2 class="section-title reveal">Behind The Seams</h2>
             <div class="process-grid">
-                
-                <div class="process-item item-tall reveal-slide-in parallax"
-                     data-title="Bản phác thảo rập nguyên bản"
-                     data-desc="Mọi thiết kế đều bắt đầu từ những nét vẽ phác thảo trên giấy, nơi ý tưởng về cấu trúc và phom dáng được định hình trước khi chạm vào mặt vải. Sự tính toán tỉ mỉ ở bước này quyết định độ rủ và sự vừa vặn hoàn hảo của thành phẩm cuối cùng.">
+                <div class="process-item item-tall reveal-slide-in parallax" data-title="Bản phác thảo rập nguyên bản" data-desc="Mọi thiết kế đều bắt đầu từ những nét vẽ phác thảo trên giấy, nơi ý tưởng về cấu trúc và phom dáng được định hình trước khi chạm vào mặt vải. Sự tính toán tỉ mỉ ở bước này quyết định độ rủ và sự vừa vặn hoàn hảo của thành phẩm cuối cùng.">
                     <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=600&q=80" alt="Phác thảo">
                 </div>
-                
-                <div class="process-item item-wide reveal-slide-in parallax"
-                     data-title="Bảng cảm hứng (Moodboard)"
-                     data-desc="Việc thu thập chất liệu, màu sắc và cảm hứng từ thiên nhiên, kiến trúc giúp định hình nên linh hồn của cả một bộ sưu tập. Đây là giai đoạn tôi trò chuyện với các thớ vải để tìm ra ngôn ngữ chung.">
+                <div class="process-item item-wide reveal-slide-in parallax" data-title="Bảng cảm hứng (Moodboard)" data-desc="Việc thu thập chất liệu, màu sắc và cảm hứng từ thiên nhiên, kiến trúc giúp định hình nên linh hồn của cả một bộ sưu tập. Đây là giai đoạn tôi trò chuyện với các thớ vải để tìm ra ngôn ngữ chung.">
                     <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80" alt="Moodboard">
                 </div>
-                
-                <div class="process-item item-square reveal-slide-in parallax"
-                     data-title="Fitting & Căn chỉnh phom dáng"
-                     data-desc="Quá trình dựng form 3D trực tiếp trên mannequin. Thay vì cắt dập máy móc, việc xếp nếp thủ công giúp giữ được độ mềm mại tự nhiên và tạo ra cấu trúc Avant-garde đặc trưng của The Flow.">
+                <div class="process-item item-square reveal-slide-in parallax" data-title="Fitting & Căn chỉnh phom dáng" data-desc="Quá trình dựng form 3D trực tiếp trên mannequin. Thay vì cắt dập máy móc, việc xếp nếp thủ công giúp giữ được độ mềm mại tự nhiên và tạo ra cấu trúc Avant-garde đặc trưng của thiết kế.">
                     <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80" alt="Fitting">
                 </div>
-                
-                <div class="process-item item-small reveal-slide-in parallax"
-                     data-title="Nghiên cứu cấu trúc sợi"
-                     data-desc="Sự tôn vinh kỹ nghệ thủ công thể hiện qua việc lựa chọn các loại sợi tự nhiên và dệt may truyền thống. Mỗi kết cấu bề mặt đều mang một cảm giác tiếp xúc (tactile) độc bản cho người mặc.">
+                <div class="process-item item-small reveal-slide-in parallax" data-title="Nghiên cứu cấu trúc sợi" data-desc="Sự tôn vinh kỹ nghệ thủ công thể hiện qua việc lựa chọn các loại sợi tự nhiên và dệt may truyền thống. Mỗi kết cấu bề mặt đều mang một cảm giác tiếp xúc (tactile) độc bản cho người mặc.">
                     <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80" alt="Chi tiết vải">
                 </div>
-
             </div>
         </section>
 
@@ -345,14 +415,32 @@
         </section>
     </main>
 
-    <footer>
-        <div>© 2026 THE FLOW. Designed by You.</div>
-        <div class="social-links"><a href="#">Instagram</a><a href="#">Behance</a></div>
+    <footer class="hmb-footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h2>HMB AGENCY</h2>
+                <p>Đối tác thiết kế và phát triển giải pháp số toàn diện. Chúng tôi đồng hành cùng sự số hóa và nâng tầm nhận diện thương hiệu của bạn.</p>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-block">
+                    <span><i class="fa-solid fa-phone"></i> Hotline</span>
+                    <a href="tel:0855555140">0855 555 140</a>
+                </div>
+                <div class="contact-block">
+                    <span><i class="fa-solid fa-envelope"></i> Email</span>
+                    <a href="mailto:hmb.agency.group@gmail.com">hmb.agency.group@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 <strong>HMB Agency</strong>. All rights reserved.</div>
+            <a href="#home" class="back-to-top">Về đầu trang ↑</a>
+        </div>
     </footer>
 
     <div id="about-modal">
         <header class="about-header">
-            <div class="logo">THE FLOW</div>
+            <div class="logo">HMB AGENCY</div>
             <button id="btn-close-about" class="btn-back"><span>&larr;</span> Quay lại trang chủ</button>
         </header>
         <div class="about-container">
@@ -361,10 +449,10 @@
                 <div class="about-content">
                     <h1>Hành trình tìm kiếm<br>ngôn ngữ của vải vóc.</h1>
                     <p>Tôi là một nhà thiết kế thời trang độc lập. Niềm đam mê của tôi không bắt nguồn từ những ánh đèn lấp lánh của sàn diễn, mà từ những âm thanh lạo xạo của kéo cắt trên mặt vải thô. Tôi luôn tin rằng thời trang là một dạng kiến trúc mềm — nơi ta xây dựng không gian cho cơ thể chuyển động.</p>
-                    <p>Triết lý cốt lõi của "The Flow" là sự tối giản mang tính cấu trúc (Structural Minimalism). Thay vì đắp thêm chi tiết để gây ấn tượng, tôi chọn cách lấy đi những thứ thừa thãi để bản chất của chất liệu được lên tiếng.</p>
+                    <p>Triết lý cốt lõi là sự tối giản mang tính cấu trúc (Structural Minimalism). Thay vì đắp thêm chi tiết để gây ấn tượng, tôi chọn cách lấy đi những thứ thừa thãi để bản chất của chất liệu được lên tiếng.</p>
                     <div class="resume-section">
                         <h2 class="resume-title">Kinh Nghiệm & Đào Tạo</h2>
-                        <div class="timeline-item"><div class="timeline-year">2023 — Hiện tại</div><div class="timeline-info"><h4>Giám đốc Sáng tạo / Nhà Sáng lập</h4><span>Thương hiệu THE FLOW</span></div></div>
+                        <div class="timeline-item"><div class="timeline-year">2023 — Hiện tại</div><div class="timeline-info"><h4>Giám đốc Sáng tạo / Nhà Sáng lập</h4><span>Thương hiệu HMB</span></div></div>
                         <div class="timeline-item"><div class="timeline-year">2020 — 2023</div><div class="timeline-info"><h4>Trợ lý Thiết kế</h4><span>Studio Thời trang Cao cấp</span></div></div>
                     </div>
                 </div>
