@@ -123,13 +123,51 @@
         .press-item-link:hover { padding-left: 15px; border-color: var(--text-primary); }
         .press-meta { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 5px; }
         .press-title { font-family: var(--font-serif); font-size: 1.25rem; }
-        .contact-form { display: flex; flex-direction: column; gap: 40px; }
+        .contact-form { display: flex; flex-direction: column; gap: 40px; align-items: stretch; }
         .form-group { display: flex; flex-direction: column; position: relative; }
         .form-group input, .form-group textarea { background: transparent; border: none; border-bottom: 1px solid #cccccc; padding: 10px 0; font-family: var(--font-sans); font-size: 1rem; color: var(--text-primary); outline: none; transition: border-color 0.3s ease; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--text-primary); }
         .form-group label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 5px; }
-        .btn-submit { align-self: flex-start; background: transparent; border: none; font-family: var(--font-sans); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--text-primary); padding-bottom: 5px; cursor: pointer; transition: opacity 0.3s ease; }
-        .btn-submit:hover { opacity: 0.6; }
+
+        /* NÚT GỬI MỚI CHỈNH SỬA: CĂN GIỮA, VIỀN ĐÔI RỘNG, ĐỘ RỘNG RỘNG HƠN */
+        .btn-submit { 
+            align-self: center; /* Đưa nút ra giữa */
+            background: transparent; 
+            border: 1px solid var(--text-primary); /* Đường viền trong mảnh */
+            border-radius: 40px; /* Bo tròn hoàn toàn */
+            font-family: var(--font-sans); 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            padding: 15px 60px; /* Tăng padding để nút rộng hơn và cao hơn sang trọng */
+            cursor: pointer; 
+            color: var(--text-primary); 
+            position: relative; /* Cần thiết cho viền ngoài */
+            transition: all 0.3s ease; 
+        }
+
+        /* Tạo đường viền ngoài mảnh song song với khoảng cách rộng hơn */
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: -6px; /* Khoảng cách giữa 2 viền mảnh rộng hơn */
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 1px solid var(--text-primary); /* Đường viền ngoài mảnh */
+            border-radius: 46px; /* Bo tròn tương ứng */
+            pointer-events: none; /* Đảm bảo không ảnh hưởng đến tương tác click */
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover { 
+            background-color: var(--text-primary); 
+            color: #ffffff; 
+        }
+
+        .btn-submit:hover::after {
+            border-color: transparent; /* Ẩn viền ngoài khi hover để hiệu ứng nền tô đậm đẹp hơn */
+        }
 
         .hmb-footer {
             background-color: var(--text-primary);
