@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dòng Chảy (The Flow) — Fashion Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. BIẾN & PHONG CÁCH CHUNG --- */
+        :root {
+            --bg-color: #f9f8f6;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.6s var(--ease-in-out);
+            --transition-revel: all 1s var(--ease-in-out);
+            --border-radius-soft: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body { overflow-x: hidden; }
+        body.modal-open { overflow: hidden; }
+
+        a { color: inherit; text-decoration: none; }
+        li { list-style: none; }
+        button { font-family: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+
+        section { padding: 140px 5%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+
+        .section-title {
+            font-family: var(--font-serif); font-size: 2.8rem; font-weight: 400; margin-bottom: 60px; letter-spacing: 1px;
+            opacity: 0; transform: translateY(20px); transition: var(--transition-revel);
+        }
+        .section-title.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- 2. HEADER TRANG CHỦ --- */
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; mix-blend-mode: difference; color: #ffffff; pointer-events: none; transition: padding-right 0s; }
+        .main-header * { pointer-events: auto; }
+        .logo { font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: 2px; font-weight: 500; }
+        nav ul { display: flex; gap: 40px; }
+        nav ul li a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 400; opacity: 0.8; transition: opacity 0.3s ease; }
+        nav ul li a:hover { opacity: 1; }
+
+        /* --- 3. CÁC SECTION TRANG CHỦ --- */
+        #home { padding: 0; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
+        .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0; transition: var(--transition-revel); }
+        .hero-video-placeholder { background: linear-gradient(135deg, #111, #222); width: 100%; height: 100%; }
+        .hero-philosophy { position: relative; z-index: 10; text-align: center; max-width: 800px; padding: 0 20px; opacity: 0; transform: translateY(20px); transition: var(--transition-revel); }
+        #home.intro .hero-video-container { opacity: 0.6; }
+        #home.intro .hero-philosophy { opacity: 1; transform: translateY(0); }
+        .hero-philosophy h1 { font-family: var(--font-serif); font-size: 2.5rem; font-style: italic; color: #ffffff; line-height: 1.6; font-weight: 400; }
+
+        #lookbook { padding: 140px 0; }
+        #lookbook .section-title { padding-left: 5%; margin-bottom: 20px; }
+        .lookbook-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 40px 5% 60px 5%; gap: 50px; scrollbar-width: none; cursor: grab; }
+        .lookbook-wrapper::-webkit-scrollbar { display: none; }
+        .lookbook-item { flex: 0 0 auto; width: 450px; scroll-snap-align: start; display: flex; flex-direction: column; opacity: 0; transform: translateX(50px); transition: var(--transition-revel); }
+        .lookbook-item.visible { opacity: 1; transform: translateX(0); }
+        .img-magnifier { width: 100%; height: 600px; overflow: hidden; background-color: #eee; position: relative; border-radius: var(--border-radius-soft); }
+        .img-magnifier img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth); filter: grayscale(20%); }
+        .img-magnifier:hover img { transform: scale(1.1); filter: grayscale(0%); }
+        .img-details-caption { position: absolute; bottom: 20px; left: 20px; font-size: 0.75rem; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; opacity: 0; transform: translateY(10px); transition: var(--transition-smooth); background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 4px; }
+        .img-magnifier:hover .img-details-caption { opacity: 1; transform: translateY(0); }
+        .lookbook-meta { margin-top: 20px; display: flex; justify-content: space-between; align-items: baseline; }
+        .lookbook-name { font-family: var(--font-serif); font-size: 1.2rem; }
+        .lookbook-season { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+
+        .process-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
+        .process-item { position: relative; overflow: hidden; background-color: #e5e5e5; opacity: 0; transform: translateY(30px); transition: var(--transition-revel); border-radius: var(--border-radius-soft); cursor: pointer; }
+        .process-item.visible { opacity: 1; transform: translateY(0); }
+        .process-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.6s ease; }
+        .parallax img { transform: scale(1.2) translateY(0); position: relative; }
+        .process-item:hover img { opacity: 0.8; }
+        
+        /* CẬP NHẬT: Thêm icon "soi" khi hover vào ảnh quá trình */
+        .process-item::after {
+            content: '+'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+            font-size: 3rem; color: #fff; opacity: 0; transition: var(--transition-smooth); font-weight: 300; pointer-events: none;
+        }
+        .process-item:hover::after { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        .item-tall { grid-column: span 4; height: 650px; transition-delay: 0.1s; }
+        .item-wide { grid-column: span 8; height: 400px; transition-delay: 0.2s; }
+        .item-square { grid-column: span 5; height: 450px; margin-top: -100px; transition-delay: 0.3s; }
+        .item-small { grid-column: span 3; height: 350px; margin-top: 50px; transition-delay: 0.4s; }
+
+        .designer-container { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: center; }
+        .designer-portrait { width: 100%; height: 650px; overflow: hidden; background-color: #ddd; opacity: 0; transform: translateY(20px); transition: var(--transition-revel); border-radius: var(--border-radius-soft); }
+        .designer-portrait.visible { opacity: 1; transform: translateY(0); }
+        .designer-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: filter 0.6s ease; transform: scale(1.2); }
+        .designer-portrait:hover img { filter: grayscale(0%); }
+        .designer-info h3 { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 25px; font-weight: 400; }
+        .designer-bio { font-size: 1.05rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 40px; text-align: justify; opacity: 0; transform: translateX(-30px); transition: var(--transition-revel); transition-delay: 0.2s; }
+        .designer-bio.visible { opacity: 1; transform: translateX(0); }
+        .btn-cv { display: inline-block; padding: 15px 40px; border: 1px solid var(--text-primary); border-radius: 30px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; transition: var(--transition-smooth); color: var(--text-primary); }
+        .btn-cv:hover { background-color: var(--text-primary); color: #ffffff; }
+
+        .contact-section-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
+        .press-list { display: flex; flex-direction: column; gap: 30px; }
+        .press-item-link { display: block; border-bottom: 1px solid #e0e0e0; padding-bottom: 15px; transition: padding-left 0.3s ease; }
+        .press-item-link:hover { padding-left: 15px; border-color: var(--text-primary); }
+        .press-meta { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 5px; }
+        .press-title { font-family: var(--font-serif); font-size: 1.25rem; }
+        .contact-form { display: flex; flex-direction: column; gap: 40px; }
+        .form-group { display: flex; flex-direction: column; position: relative; }
+        .form-group input, .form-group textarea { background: transparent; border: none; border-bottom: 1px solid #cccccc; padding: 10px 0; font-family: var(--font-sans); font-size: 1rem; color: var(--text-primary); outline: none; transition: border-color 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--text-primary); }
+        .form-group label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 5px; }
+        .btn-submit { align-self: flex-start; background: transparent; border: none; font-family: var(--font-sans); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--text-primary); padding-bottom: 5px; cursor: pointer; transition: opacity 0.3s ease; }
+        .btn-submit:hover { opacity: 0.6; }
+        footer { padding: 60px 5%; border-top: 1px solid #e8e7e3; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary); }
+        .social-links { display: flex; gap: 30px; }
+
+        /* --- 4. GIAO DIỆN TRANG "VỀ TÔI" --- */
+        #about-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--bg-color); z-index: 2000; overflow-y: scroll; overflow-x: hidden;
+            overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+        #about-modal.active { opacity: 1; visibility: visible; }
+        #about-modal::-webkit-scrollbar { width: 6px; }
+        #about-modal::-webkit-scrollbar-track { background: transparent; }
+        #about-modal::-webkit-scrollbar-thumb { background-color: rgba(17, 17, 17, 0.2); border-radius: 10px; }
+        
+        .about-header { position: sticky; top: 0; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background-color: rgba(249, 248, 246, 0.95); backdrop-filter: blur(5px); border-bottom: 1px solid #e8e7e3; z-index: 10; }
+        .btn-back { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
+        .btn-back:hover { opacity: 0.5; }
+        .about-container { padding: 80px 5% 120px 5%; max-width: 1400px; margin: 0 auto; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+        .about-image { width: 100%; height: 800px; border-radius: var(--border-radius-soft); overflow: hidden; position: sticky; top: 120px; }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(80%); transition: filter 0.5s ease; }
+        .about-image:hover img { filter: grayscale(0%); }
+        .about-content h1 { font-family: var(--font-serif); font-size: 3.5rem; line-height: 1.2; margin-bottom: 30px; font-weight: 400; }
+        .about-content p { font-size: 1.1rem; line-height: 1.9; color: var(--text-secondary); margin-bottom: 25px; text-align: justify; }
+        .resume-section { margin-top: 60px; border-top: 1px solid #e8e7e3; padding-top: 40px; }
+        .resume-title { font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 30px; }
+        .timeline-item { display: grid; grid-template-columns: 1fr 3fr; gap: 20px; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid #f0efeb; }
+        .timeline-year { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; letter-spacing: 1px; }
+        .timeline-info h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 500; }
+        .timeline-info span { font-size: 0.9rem; color: var(--text-secondary); font-style: italic; }
+
+
+        /* --- 5. LIGHTBOX BIÊN TẬP (EDITORIAL POPUP) --- */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
+            z-index: 3000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+            padding: 5%;
+        }
+        #lightbox.active { opacity: 1; visibility: visible; }
+        
+        .lightbox-card {
+            display: flex; background: var(--bg-color); width: 100%; max-width: 1200px; height: 80vh;
+            border-radius: var(--border-radius-soft); overflow: hidden;
+            transform: scale(0.95) translateY(20px); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        #lightbox.active .lightbox-card { transform: scale(1) translateY(0); }
+
+        .lightbox-img-wrapper { flex: 6; position: relative; overflow: hidden; background: #e5e5e5; }
+        .lightbox-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .lightbox-content {
+            flex: 4; padding: 60px 50px; display: flex; flex-direction: column; justify-content: center;
+            overflow-y: auto; background-color: var(--bg-color);
+        }
+        
+        .lightbox-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 20px; }
+        #lightbox-title { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 400; margin-bottom: 30px; line-height: 1.3; }
+        #lightbox-desc { font-size: 1.05rem; line-height: 1.8; color: var(--text-secondary); text-align: justify; }
+
+        .lightbox-close {
+            position: absolute; top: 30px; right: 40px; color: #ffffff; font-size: 40px; font-weight: 300;
+            cursor: pointer; transition: color 0.3s; z-index: 3001; mix-blend-mode: difference;
+        }
+        .lightbox-close:hover { opacity: 0.6; }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul { display: none; }
+            .designer-container, .contact-section-wrapper, .about-grid { grid-template-columns: 1fr; gap: 50px; }
+            .process-grid { display: flex; flex-direction: column; }
+            .process-item { height: 400px !important; margin-top: 0 !important; }
+            .about-image { position: relative; height: 500px; top: 0; }
+            .about-content h1 { font-size: 2.5rem; }
+            
+            /* Responsive Lightbox */
+            .lightbox-card { flex-direction: column; height: 90vh; }
+            .lightbox-img-wrapper { flex: 5; }
+            .lightbox-content { flex: 5; padding: 30px; }
+            #lightbox-title { font-size: 1.8rem; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">THE FLOW</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Trang chủ</a></li>
+                <li><a href="#lookbook">Lookbook</a></li>
+                <li><a href="#process">Hậu trường</a></li>
+                <li><a href="#designer">Triết lý</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section id="home">
+            <div class="hero-video-container"><div class="hero-video-placeholder"></div></div>
+            <div class="hero-philosophy">
+                <h1>"Thời trang không chỉ là áo quần,<br>đó là kiến trúc của cơ thể."</h1>
+            </div>
+        </section>
+
+        <section id="lookbook">
+            <h2 class="section-title reveal">The Lookbook</h2>
+            <div class="lookbook-wrapper">
+                <div class="lookbook-item reveal-slide-in">
+                    <div class="img-magnifier">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" alt="BST 01">
+                        <div class="img-details-caption">Chi tiết đường may</div>
+                    </div>
+                    <div class="lookbook-meta">
+                        <span class="lookbook-name">Dòng Chảy Khởi Nguyên</span>
+                        <span class="lookbook-season">Fall / Winter 2026</span>
+                    </div>
+                </div>
+                <div class="lookbook-item reveal-slide-in">
+                    <div class="img-magnifier">
+                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80" alt="BST 02">
+                        <div class="img-details-caption">Phom dáng cấu trúc</div>
+                    </div>
+                    <div class="lookbook-meta">
+                        <span class="lookbook-name">Nếp Gấp Thời Gian</span>
+                        <span class="lookbook-season">Fall / Winter 2026</span>
+                    </div>
+                </div>
+                <div class="lookbook-item reveal-slide-in">
+                    <div class="img-magnifier">
+                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80" alt="BST 03">
+                        <div class="img-details-caption">Vải dệt thủ công</div>
+                    </div>
+                    <div class="lookbook-meta">
+                        <span class="lookbook-name">Cấu Trúc Tự Do</span>
+                        <span class="lookbook-season">Spring / Summer 2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="process">
+            <h2 class="section-title reveal">Behind The Seams</h2>
+            
+            <div class="process-grid">
+                
+                <div class="process-item item-tall reveal-slide-in parallax"
+                     data-title="Bản phác thảo rập nguyên bản"
+                     data-desc="Mọi thiết kế đều bắt đầu từ những nét vẽ phác thảo trên giấy, nơi ý tưởng về cấu trúc và phom dáng được định hình trước khi chạm vào mặt vải. Sự tính toán tỉ mỉ ở bước này quyết định độ rủ và sự vừa vặn hoàn hảo của thành phẩm cuối cùng.">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=600&q=80" alt="Phác thảo">
+                </div>
+                
+                <div class="process-item item-wide reveal-slide-in parallax"
+                     data-title="Bảng cảm hứng (Moodboard)"
+                     data-desc="Việc thu thập chất liệu, màu sắc và cảm hứng từ thiên nhiên, kiến trúc giúp định hình nên linh hồn của cả một bộ sưu tập. Đây là giai đoạn tôi trò chuyện với các thớ vải để tìm ra ngôn ngữ chung.">
+                    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=80" alt="Moodboard">
+                </div>
+                
+                <div class="process-item item-square reveal-slide-in parallax"
+                     data-title="Fitting & Căn chỉnh phom dáng"
+                     data-desc="Quá trình dựng form 3D trực tiếp trên mannequin. Thay vì cắt dập máy móc, việc xếp nếp thủ công giúp giữ được độ mềm mại tự nhiên và tạo ra cấu trúc Avant-garde đặc trưng của The Flow.">
+                    <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80" alt="Fitting">
+                </div>
+                
+                <div class="process-item item-small reveal-slide-in parallax"
+                     data-title="Nghiên cứu cấu trúc sợi"
+                     data-desc="Sự tôn vinh kỹ nghệ thủ công thể hiện qua việc lựa chọn các loại sợi tự nhiên và dệt may truyền thống. Mỗi kết cấu bề mặt đều mang một cảm giác tiếp xúc (tactile) độc bản cho người mặc.">
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80" alt="Chi tiết vải">
+                </div>
+
+            </div>
+        </section>
+
+        <section id="designer">
+            <div class="designer-container">
+                <div class="designer-portrait reveal-slide-in parallax">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Nhà thiết kế">
+                </div>
+                <div class="designer-info">
+                    <h2 class="section-title reveal" style="margin-bottom: 20px;">The Designer</h2>
+                    <div class="designer-bio reveal-slide-in">
+                        <h3>Kẻ kiến tạo phom dáng từ những dòng chảy tự nhiên.</h3>
+                        <p>Tốt nghiệp chuyên ngành Thiết kế Thời trang, tôi định hình phong cách cá nhân qua lăng kính tối giản và cấu trúc Avant-garde. Đối với tôi, mỗi mét vải không chỉ đơn thuần là nguyên liệu mà là một thực thể sống có chuyển động và ngôn ngữ riêng.</p>
+                        <button id="btn-open-about" class="btn-cv">Khám phá thêm về tôi</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-section-wrapper reveal">
+                <div>
+                    <h2 class="section-title reveal" style="margin-bottom: 40px;">Editorial & Press</h2>
+                    <div class="press-list">
+                        <a href="#" class="press-item-link"><p class="press-meta">Vogue Magazine</p><h4 class="press-title">"Dòng Chảy Khởi Nguyên"</h4></a>
+                        <a href="#" class="press-item-link"><p class="press-meta">Elle Fashion</p><h4 class="press-title">Top 10 nhà thiết kế trẻ</h4></a>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="section-title reveal" style="margin-bottom: 40px;">Hợp tác / Contact</h2>
+                    <form class="contact-form" action="#" method="POST">
+                        <div class="form-group"><label>Tên</label><input type="text" required></div>
+                        <div class="form-group"><label>Email</label><input type="email" required></div>
+                        <div class="form-group"><label>Yêu cầu</label><textarea rows="4" required></textarea></div>
+                        <button type="submit" class="btn-submit">Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>© 2026 THE FLOW. Designed by You.</div>
+        <div class="social-links"><a href="#">Instagram</a><a href="#">Behance</a></div>
+    </footer>
+
+    <div id="about-modal">
+        <header class="about-header">
+            <div class="logo">THE FLOW</div>
+            <button id="btn-close-about" class="btn-back"><span>&larr;</span> Quay lại trang chủ</button>
+        </header>
+        <div class="about-container">
+            <div class="about-grid">
+                <div class="about-image"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Chân dung"></div>
+                <div class="about-content">
+                    <h1>Hành trình tìm kiếm<br>ngôn ngữ của vải vóc.</h1>
+                    <p>Tôi là một nhà thiết kế thời trang độc lập. Niềm đam mê của tôi không bắt nguồn từ những ánh đèn lấp lánh của sàn diễn, mà từ những âm thanh lạo xạo của kéo cắt trên mặt vải thô. Tôi luôn tin rằng thời trang là một dạng kiến trúc mềm — nơi ta xây dựng không gian cho cơ thể chuyển động.</p>
+                    <p>Triết lý cốt lõi của "The Flow" là sự tối giản mang tính cấu trúc (Structural Minimalism). Thay vì đắp thêm chi tiết để gây ấn tượng, tôi chọn cách lấy đi những thứ thừa thãi để bản chất của chất liệu được lên tiếng.</p>
+                    <div class="resume-section">
+                        <h2 class="resume-title">Kinh Nghiệm & Đào Tạo</h2>
+                        <div class="timeline-item"><div class="timeline-year">2023 — Hiện tại</div><div class="timeline-info"><h4>Giám đốc Sáng tạo / Nhà Sáng lập</h4><span>Thương hiệu THE FLOW</span></div></div>
+                        <div class="timeline-item"><div class="timeline-year">2020 — 2023</div><div class="timeline-info"><h4>Trợ lý Thiết kế</h4><span>Studio Thời trang Cao cấp</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-card">
+            <div class="lightbox-img-wrapper">
+                <img id="lightbox-img" src="" alt="Zoomed Process">
+            </div>
+            <div class="lightbox-content">
+                <div class="lightbox-tag">Behind The Seams</div>
+                <h3 id="lightbox-title"></h3>
+                <p id="lightbox-desc"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => document.querySelector('#home').classList.add('intro'));
+
+        // Intersection Observer (Reveal)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { root: null, threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal, .reveal-slide-in').forEach(el => observer.observe(el));
+
+        // Parallax Logic
+        const parallaxItems = document.querySelectorAll('.parallax img');
+        let activeParallax = [];
+        const parallaxObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) activeParallax.push(entry.target.querySelector('img'));
+                else activeParallax = activeParallax.filter(img => img !== entry.target.querySelector('img'));
+            });
+        }, { root: null, threshold: 0 });
+        document.querySelectorAll('.parallax').forEach(el => parallaxObserver.observe(el));
+
+        function doParallax() {
+            activeParallax.forEach(img => {
+                const parent = img.parentElement;
+                const rect = parent.getBoundingClientRect();
+                const viewHeight = window.innerHeight;
+                if (rect.top < viewHeight && rect.bottom > 0) {
+                    const percentageScrolled = (viewHeight - rect.top) / (viewHeight + rect.height);
+                    const maxMovement = rect.height * 0.1; 
+                    const yPos = (percentageScrolled * 2 - 1) * maxMovement * -1;
+                    img.style.transform = `scale(1.2) translateY(${yPos}px)`;
+                }
+            });
+        }
+        window.addEventListener('scroll', () => { if (activeParallax.length > 0) requestAnimationFrame(doParallax); });
+        window.addEventListener('load', doParallax);
+        
+        // Cuộn ngang Lookbook
+        const slider = document.querySelector('.lookbook-wrapper');
+        let isDown = false, startX, scrollLeft;
+        slider.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; });
+        slider.addEventListener('mouseleave', () => isDown = false);
+        slider.addEventListener('mouseup', () => isDown = false);
+        slider.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            e.preventDefault();
+            slider.scrollLeft = scrollLeft - ((e.pageX - slider.offsetLeft) - startX) * 2;
+        });
+
+        // Hàm tính toán độ rộng thanh cuộn (Chống giật trang)
+        function getScrollbarWidth() { return window.innerWidth - document.documentElement.clientWidth; }
+        const mainHeader = document.querySelector('.main-header');
+
+        // --- ĐIỀU KHIỂN MODAL "VỀ TÔI" ---
+        const btnOpenAbout = document.getElementById('btn-open-about');
+        const btnCloseAbout = document.getElementById('btn-close-about');
+        const aboutModal = document.getElementById('about-modal');
+
+        btnOpenAbout.addEventListener('click', () => {
+            const scrollBarWidth = getScrollbarWidth();
+            document.body.style.paddingRight = `${scrollBarWidth}px`;
+            mainHeader.style.paddingRight = `calc(5% + ${scrollBarWidth}px)`;
+            aboutModal.classList.add('active'); 
+            document.body.classList.add('modal-open'); 
+            aboutModal.scrollTo(0, 0); 
+        });
+
+        btnCloseAbout.addEventListener('click', () => {
+            aboutModal.classList.remove('active'); 
+            document.body.classList.remove('modal-open'); 
+            setTimeout(() => { document.body.style.paddingRight = '0px'; mainHeader.style.paddingRight = '5%'; }, 500);
+        });
+
+        // --- CẬP NHẬT: ĐIỀU KHIỂN LIGHTBOX BIÊN TẬP ---
+        const processItems = document.querySelectorAll('.process-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-desc');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        processItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const scrollBarWidth = getScrollbarWidth();
+                document.body.style.paddingRight = `${scrollBarWidth}px`;
+                mainHeader.style.paddingRight = `calc(5% + ${scrollBarWidth}px)`;
+                document.body.classList.add('modal-open');
+
+                // Lấy dữ liệu từ thẻ HTML truyền vào Popup
+                lightboxImg.src = item.querySelector('img').src;
+                lightboxTitle.innerText = item.getAttribute('data-title');
+                lightboxDesc.innerText = item.getAttribute('data-desc');
+                
+                lightbox.classList.add('active');
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            setTimeout(() => {
+                document.body.style.paddingRight = '0px';
+                mainHeader.style.paddingRight = '5%';
+                lightboxImg.src = ''; 
+            }, 500); 
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        
+        // Đóng lightbox khi click ra nền đen xung quanh Card
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
