@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. BIẾN & PHONG CÁCH CHUNG --- */
         :root {
             --bg-color: #f9f8f6;
             --text-primary: #111111;
@@ -49,7 +48,6 @@
         }
         .section-title.visible { opacity: 1; transform: translateY(0); }
 
-        /* --- 2. HEADER TRANG CHỦ --- */
         .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; mix-blend-mode: difference; color: #ffffff; pointer-events: none; transition: padding-right 0s; }
         .main-header * { pointer-events: auto; }
         .logo { font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: 2px; font-weight: 500; }
@@ -57,7 +55,6 @@
         nav ul li a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 400; opacity: 0.8; transition: opacity 0.3s ease; }
         nav ul li a:hover { opacity: 1; }
 
-        /* --- 3. CÁC SECTION TRANG CHỦ --- */
         #home { padding: 0; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
         .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0; transition: var(--transition-revel); }
         .hero-video-placeholder { background: linear-gradient(135deg, #111, #222); width: 100%; height: 100%; }
@@ -66,7 +63,6 @@
         #home.intro .hero-philosophy { opacity: 1; transform: translateY(0); }
         .hero-philosophy h1 { font-family: var(--font-serif); font-size: 2.5rem; font-style: italic; color: #ffffff; line-height: 1.6; font-weight: 400; }
 
-        /* BỘ SƯU TẬP (LOOKBOOK) */
         #lookbook { padding: 140px 0; }
         #lookbook .section-title { padding-left: 5%; margin-bottom: 20px; }
         .lookbook-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 40px 5% 60px 5%; gap: 50px; scrollbar-width: none; cursor: grab; }
@@ -76,8 +72,7 @@
         
         .img-magnifier { 
             width: 100%; height: 600px; overflow: hidden; background-color: #eee; position: relative; 
-            border-radius: var(--border-radius-soft); /* Đảm bảo bo góc */
-            /* Force GPU acceleration để chống vỡ viền khi hover/zoom trên Safari */
+            border-radius: var(--border-radius-soft); 
             -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
         
@@ -89,7 +84,6 @@
         .lookbook-name { font-family: var(--font-serif); font-size: 1.2rem; }
         .lookbook-season { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* HẬU TRƯỜNG (BEHIND THE SEAMS) */
         .process-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
         .process-item { 
             position: relative; overflow: hidden; background-color: #e5e5e5; opacity: 0; transform: translateY(30px); transition: var(--transition-revel); 
@@ -111,7 +105,6 @@
         .item-square { grid-column: span 5; height: 450px; margin-top: -100px; transition-delay: 0.3s; }
         .item-small { grid-column: span 3; height: 350px; margin-top: 50px; transition-delay: 0.4s; }
 
-        /* THE DESIGNER */
         .designer-container { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: center; }
         .designer-portrait { width: 100%; height: 650px; overflow: hidden; background-color: #ddd; opacity: 0; transform: translateY(20px); transition: var(--transition-revel); border-radius: var(--border-radius-soft); -webkit-mask-image: -webkit-radial-gradient(white, black); }
         .designer-portrait.visible { opacity: 1; transform: translateY(0); }
@@ -123,7 +116,6 @@
         .btn-cv { display: inline-block; padding: 15px 40px; border: 1px solid var(--text-primary); border-radius: 30px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; transition: var(--transition-smooth); color: var(--text-primary); }
         .btn-cv:hover { background-color: var(--text-primary); color: #ffffff; }
 
-        /* CONTACT & FOOTER */
         .contact-section-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
         .press-list { display: flex; flex-direction: column; gap: 30px; }
         .press-item-link { display: block; border-bottom: 1px solid #e0e0e0; padding-bottom: 15px; transition: padding-left 0.3s ease; }
@@ -140,7 +132,6 @@
         footer { padding: 60px 5%; border-top: 1px solid #e8e7e3; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary); }
         .social-links { display: flex; gap: 30px; }
 
-        /* --- 4. GIAO DIỆN TRANG "VỀ TÔI" --- */
         #about-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background-color: var(--bg-color); z-index: 2000; overflow-y: scroll; overflow-x: hidden;
@@ -169,7 +160,6 @@
         .timeline-info h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 500; }
         .timeline-info span { font-size: 0.9rem; color: var(--text-secondary); font-style: italic; }
 
-        /* --- 5. LIGHTBOX BIÊN TẬP (EDITORIAL POPUP) --- */
         #lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
@@ -205,7 +195,6 @@
         }
         .lightbox-close:hover { opacity: 0.6; }
 
-        /* --- TÙY CHỈNH MOBILE (RESPONSIVE) --- */
         @media (max-width: 968px) {
             nav ul { display: none; }
             .designer-container, .contact-section-wrapper, .about-grid { grid-template-columns: 1fr; gap: 50px; }
@@ -216,22 +205,11 @@
             .timeline-item { grid-template-columns: 1fr; gap: 5px; }
             .hero-philosophy h1 { font-size: 1.8rem; }
             
-            /* Cập nhật cho phần Lookbook trên Mobile */
-            .lookbook-wrapper {
-                padding: 20px 5% 40px 5%;
-                gap: 20px; /* Thu hẹp khoảng cách giữa các ảnh */
-            }
-            .lookbook-item {
-                width: 280px; /* Thu nhỏ chiều rộng khung ảnh */
-            }
-            .img-magnifier {
-                height: 380px; /* Thu nhỏ chiều cao khung ảnh */
-            }
-            .lookbook-name {
-                font-size: 1.1rem;
-            }
+            .lookbook-wrapper { padding: 20px 5% 40px 5%; gap: 20px; }
+            .lookbook-item { width: 280px; }
+            .img-magnifier { height: 380px; }
+            .lookbook-name { font-size: 1.1rem; }
 
-            /* Responsive Lightbox Popup */
             .lightbox-card { flex-direction: column; height: 90vh; }
             .lightbox-img-wrapper { flex: 5; }
             .lightbox-content { flex: 5; padding: 30px; }
@@ -409,10 +387,8 @@
     </div>
 
     <script>
-        // 1. Hoạt ảnh Intro khi trang vừa tải
         window.addEventListener('load', () => document.querySelector('#home').classList.add('intro'));
 
-        // 2. Intersection Observer (Hiệu ứng phần tử xuất hiện mượt mà)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -423,7 +399,6 @@
         }, { root: null, threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal, .reveal-slide-in').forEach(el => observer.observe(el));
 
-        // 3. Hiệu ứng Parallax cho ảnh Hậu trường (được tính toán chính xác để không lộ viền)
         const parallaxItems = document.querySelectorAll('.parallax img');
         let activeParallax = [];
         const parallaxObserver = new IntersectionObserver((entries) => {
@@ -450,7 +425,6 @@
         window.addEventListener('scroll', () => { if (activeParallax.length > 0) requestAnimationFrame(doParallax); });
         window.addEventListener('load', doParallax);
         
-        // 4. Kích hoạt cuộn ngang Lookbook bằng kéo thả chuột
         const slider = document.querySelector('.lookbook-wrapper');
         let isDown = false, startX, scrollLeft;
         slider.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; });
@@ -462,11 +436,9 @@
             slider.scrollLeft = scrollLeft - ((e.pageX - slider.offsetLeft) - startX) * 2;
         });
 
-        // 5. Hàm tính toán độ rộng thanh cuộn (Dùng chung để chống giật trang khi mở Popup)
         function getScrollbarWidth() { return window.innerWidth - document.documentElement.clientWidth; }
         const mainHeader = document.querySelector('.main-header');
 
-        // 6. Điều khiển Modal "Về Tôi"
         const btnOpenAbout = document.getElementById('btn-open-about');
         const btnCloseAbout = document.getElementById('btn-close-about');
         const aboutModal = document.getElementById('about-modal');
@@ -486,7 +458,6 @@
             setTimeout(() => { document.body.style.paddingRight = '0px'; mainHeader.style.paddingRight = '5%'; }, 500);
         });
 
-        // 7. Điều khiển Popup Lightbox Biên tập cho phần Hậu trường
         const processItems = document.querySelectorAll('.process-item');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -501,7 +472,6 @@
                 mainHeader.style.paddingRight = `calc(5% + ${scrollBarWidth}px)`;
                 document.body.classList.add('modal-open');
 
-                // Lấy dữ liệu từ thẻ HTML truyền vào Popup
                 lightboxImg.src = item.querySelector('img').src;
                 lightboxTitle.innerText = item.getAttribute('data-title');
                 lightboxDesc.innerText = item.getAttribute('data-desc');
@@ -522,7 +492,6 @@
 
         lightboxClose.addEventListener('click', closeLightbox);
         
-        // Đóng lightbox khi click ra nền tối xung quanh Card
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 closeLightbox();
